@@ -41,7 +41,7 @@
             // prepare query statement
             $stmt = $this->conn->prepare( $query );
         
-            // bind id of product to be updated
+            // bind id of contact to be updated
             $stmt->bindParam(1, $this->id);
         
             // execute query
@@ -117,7 +117,7 @@
             return false;
             
         }
-        // update the product
+        // update the contact
         function update(){
     
             // update query
@@ -146,18 +146,22 @@
             $stmtDelete->bindParam(':id', $this->id);
             
             // execute the query            
-            if($stmt->execute()){
-                $stmtDelete->execute();
-                foreach ($this->phoneNumbers as $value) {
-                    $query_phones = "INSERT INTO Telefonos SET Numero=:numero, ContactoId=:id";
-    
-                    $nestedStatement = $this->conn->prepare($query_phones);                                                            
-                    
-                    $nestedStatement->bindParam(":numero", $value);
-                    $nestedStatement->bindParam(":id", $this->id);
-                    
-                    $nestedStatement->execute();
-                };  
+            if($stmt->execute()){                
+                if($this->phoneNumbers){
+                    if(count($this->phoneNumbers) > 0){
+                        $stmtDelete->execute();
+                        foreach ($this->phoneNumbers as $value) {
+                            $query_phones = "INSERT INTO Telefonos SET Numero=:numero, ContactoId=:id";
+            
+                            $nestedStatement = $this->conn->prepare($query_phones);                                                            
+                            
+                            $nestedStatement->bindParam(":numero", $value);
+                            $nestedStatement->bindParam(":id", $this->id);
+                            
+                            $nestedStatement->execute();
+                        };  
+                    }
+                }                                
                 return true;              
             }
         

@@ -26,28 +26,43 @@
     $contact->id = $data->id;
     
     // set contact property values
-    $contact->name = $data->name;
-    $contact->lastname = $data->lastname;
-    $contact->email = $data->email;
-    $contact->phoneNumbers = $data->phoneNumbers;
-    
-    // update the contact
-    if($contact->update()){
-    
-        // set response code - 200 ok
-        http_response_code(200);
-    
+
+    if(
+        !empty($data->name) &&
+        !empty($data->lastname) &&
+        !empty($data->email) &&
+        !empty($data->phoneNumbers)
+    ){
+        $contact->name = $data->name;    
+        $contact->lastname = $data->lastname;
+        $contact->email = $data->email;
+        $contact->phoneNumbers = $data->phoneNumbers;
+        
+        // update the contact
+        if($contact->update()){
+        
+            // set response code - 200 ok
+            http_response_code(200);
+        
+            // tell the user
+            echo json_encode(array("message" => "contact was updated."));
+        }
+        
+        // if unable to update the contact, tell the user
+        else{
+        
+            // set response code - 503 service unavailable
+            http_response_code(503);
+        
+            // tell the user
+            echo json_encode(array("message" => "Unable to update contact."));
+        }
+    }else{
+  
+        // set response code - 400 bad request
+        http_response_code(400);
+      
         // tell the user
-        echo json_encode(array("message" => "contact was updated."));
-    }
-    
-    // if unable to update the contact, tell the user
-    else{
-    
-        // set response code - 503 service unavailable
-        http_response_code(503);
-    
-        // tell the user
-        echo json_encode(array("message" => "Unable to update contact."));
+        echo json_encode(array("message" => "Unable to create update. Data is incomplete."));
     }
 ?>
