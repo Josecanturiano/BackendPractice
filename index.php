@@ -5,7 +5,7 @@
 
 /*
     In postman send raw body like this.
-    for update:
+    //for update:
     {
         "id": "15",
         "name": "Mauricio",
@@ -17,7 +17,7 @@
         ]
     }
 
-    for create:
+    //for create:
     {
         "id": "15",
         "name": "Mauricio",
@@ -29,8 +29,7 @@
         ]
     }
 
-    for delete: 
-
+    //for delete: 
     {
         "id": "14"
     }
